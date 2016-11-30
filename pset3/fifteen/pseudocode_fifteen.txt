@@ -1,0 +1,6 @@
+Populate the panel with to nested loops
+Populate with numbers
+Swap position of 1 and 2 tile depending on size parity of the board
+Change o for underscore
+Move the tile
+    Between -1 and d (-1 < i > d)

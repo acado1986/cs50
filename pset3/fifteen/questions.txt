@@ -1,0 +1,9 @@
+questions.txt
+
+Computer Science 50
+Problem Set 3
+
+0.The dimension of the board are difined by two constants (DIM_MIN AND DIM_MAX), and can be between 3 and 9 side units (between 3X# and 9X9), inclusive.
+1.The data structure that is used in the game is a 2D array. 
+2.The function greet().
+3.The function that needs to be implemented are: init(), draw(), move(), won().

@@ -1,0 +1,21 @@
+Insertion sort
+// Pass to arguments an array an the size of it
+InsertionSort ( A[], n)
+{
+    // Iterate through array
+	for i = 1 to n-1 
+	{	
+	    // Store the value of the element to be sorted
+		value = A[i]
+		// Create an index for the sorted elements
+		hole = i
+		// Iterate through the sorted elements to compare the value
+		while (hole > 0 && A[hole-1] > value)
+		{
+			A[hole] = A[hole-1]
+			hole = hole -1
+		}
+		// Assign the value to the hole
+		A[hole] = value
+	}
+}
