@@ -15,6 +15,9 @@
 // define size of a BYTE 
 typedef uint8_t BYTE;
 
+// define cluster block size
+#define BLOCK 512 
+
 int main()
 {
     // open memory card file for reading
@@ -26,7 +29,7 @@ int main()
     }
     
     // create a buffer of 512 bytes to store a cluster block (FAT file system)
-    BYTE buff[512];
+    BYTE buff[BLOCK];
     
     // variables for titles of the new files, ex. "###.jpg"
     char title[8];
@@ -42,22 +45,14 @@ int main()
         bool newJpg = false;
         
         // check if a new jpg is found
-        for (int j = 0; j <= 508; j += 4)
+        // check the first 3 bytes for pattern 0xFFD8FF and
+        // the fourth value between 0xE0 and 0xEF
+        if (buff[0] == 0xFF && buff[1] == 0xD8 && buff[2] == 0xFF && (buff[3] >= 0xE0 && buff[3] <= 0xEF))
         {
-            // check the first 3 bytes for a pattern
-            if (buff[j] == 0xFF && buff[j+1] == 0xD8 && buff[j+2] == 0xFF)
-            {
-                // check if the fourth byte has the values between 0xe0 and 0xef
-                if (buff[j+3] >= 0xE0 && buff[j+3] <= 0xEF)
-                {
-                    // update the jpg flag and the number of file
-                    newJpg = true;
-                    file_num++;
-                    break;
-                }
-            }
+            newJpg = true;
+            file_num++;
         }
-        
+            
         // open a new jpg for writing
         if (newJpg == true)
         {
