@@ -18,7 +18,7 @@ typedef uint8_t BYTE;
 // define cluster block size
 #define BLOCK 512 
 
-int main()
+int main(void)
 {
     // open memory card file for reading
     FILE* inptr = fopen("card.raw", "r");
@@ -58,7 +58,9 @@ int main()
         {
             // close previous file if exists
             if ( outptr != NULL)
+            {
                 fclose(outptr);
+            }
         
             // name of new file
             sprintf(title, "%03d.jpg", file_num); 
@@ -74,8 +76,10 @@ int main()
        
         // check to only write on a valid jpg file
         if (outptr != NULL)
+        {
             // write data to file
             fwrite(&buff, sizeof(buff), 1, outptr);
+        }
             
     }
         
@@ -84,7 +88,9 @@ int main()
         
     // close remaining files
     if (outptr != NULL)
+    {
         fclose(outptr);
+    }
         
     // exit succesfully
     return 0;
