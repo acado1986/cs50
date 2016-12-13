@@ -17,12 +17,17 @@ int main(int argc, char* argv[])
     // ensure proper usage
     if (argc != 4)
     {
-        printf("Usage: ./copy infile outfile\n");
+        printf("Usage: ./resize n infile outfile\n");
         return 1;
     }
     
     // remenber the resize factor
     int resize = atoi(argv[1]);
+    if (resize < 1 && resize > 100)
+    {
+        printf("Resize factor \"n\" must be an integer between 1 and 100\n");
+        return 2;
+    }
 
     // remember filenames
     char* infile = argv[2];
@@ -33,7 +38,7 @@ int main(int argc, char* argv[])
     if (inptr == NULL)
     {
         printf("Could not open %s.\n", infile);
-        return 2;
+        return 3;
     }
 
     // open output file
@@ -42,7 +47,7 @@ int main(int argc, char* argv[])
     {
         fclose(inptr);
         fprintf(stderr, "Could not create %s.\n", outfile);
-        return 3;
+        return 4;
     }
 
     // read infile's BITMAPFILEHEADER
@@ -60,7 +65,7 @@ int main(int argc, char* argv[])
         fclose(outptr);
         fclose(inptr);
         fprintf(stderr, "Unsupported file format.\n");
-        return 4;
+        return 5;
     }
     
     // store the original dimensions of the bitmap for reading the input file 
