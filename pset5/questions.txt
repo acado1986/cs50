@@ -1,0 +1,22 @@
+0. It is a lung diseas , knowed as well as silicosis, caused by inhaling very fine ash or sand dust.
+1. getrusage returns the resource usage measures (statitstics) for the first function's argument (int who) provided that can be
+    for the calling process (RUSAGE_SELF), all children of that process that terminated or have been waited for (RUSAGE_CHILDREN) 
+    or the calling thred (RUSAGE_THREAD).
+2. A variable of type struct rusage have 16 members.
+3. Because getrsuage() function's second argument it must be a pointer to an struct rusage and the variables "before" and "after" 
+    are of type struct rusage. So the values are passed as by reference (their address). 
+4. First "main()" makes sure the correct number of arguments are provided (if no dictionary is provided then it uses the default one),
+    and prepares the statitistics variables. It loads the dictionary in memory with the "load()" function and measure the time to load.
+    If load is not posible then exits. Next it prepares the text file for reading. If errors ocurrs then unloads the dictionary
+    freeing the memory and exits. Next it prepares to spell check initializing a variable "index" for tracking the position of a character 
+    in a word, a variable "misspellings" for tracking the misspelled words in the text, a variable for tracking the number of words read from the text
+    and a variable container with a lenght of maximum size characters to hold the word that will be spellchecked. Using a "for loop" and 
+    the "fgetc()" function it reads a character at a time until the end of the file. It itinerates by calling the function once again,
+    as a third argument to the loop ( the incrementing argument), moving the reading cursor to the next character. Inside the loop it has 3 corner cases ("if else if" statements) that verifies on each character read if: it is an alphabetical character or an apostrophes and add it to the word container increasing the "index" to the next available position, as well if the word is bigger than maximum lenght (index > lenght) ignore the word by travesing all the string and set index to 0 for the next word; ignore if is a number, travers and set index to zero like above ;if it reacheas the end of the string and it is not a character or a number it founded a word, it terminates with a string end character, updates the count of the words founded, checks for spelling by loking the word in the dictionary (analising the time statistics aswell), print the misspelled word on the screen and set the index variable to 0 to prepare for a new word.
+    After exiting the loop it will check for reading errors close the text file, determine the size of the dictionary and unload it (on every function analising the time data). At the end with the help of the print statements will print on the screen the misspelled words, the words in the dictionary, the words in the text and various time datas analisis. 
+5. "fgetc()" has more control on a character
+6.  TODO
+7.  TODO
+8.  TODO
+9.  TODO
+10. TODO
