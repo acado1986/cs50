@@ -1,0 +1,33 @@
+Check must be case insensitive
+only pass string in alphabetical order and apostrophe, words will appear only once per line
+
+Load - load the dictionary
+In dictionary.h
+define a trie struct ( struct node* children[27] and boolean value)
+define a root pointer
+In dictionary.c
+for every dictionary word, iterate through the trie use fgets
+each element in children corresponds t a different letter
+check the value at children[i]
+    if null, malloc a new node, have children[i] point to it
+    if not null, move to a new node and continue
+if at end of word, set is_word to true
+
+Check - case insensitive
+for each letter in input word
+    go to corresponding element in children
+    if null, word is misspelled
+    in not null, move to the next letter
+    once at the end of input word
+    check if is_word is true
+    
+Size -number of words
+while loading dict memorize number of words with a global variable
+
+Unload - free everyting
+unload from bottom to top
+travel to lowest posible node
+    free all pointers in children
+    backtrack upwards, freeing all elements in each children array until you hit root node
+recursion
+

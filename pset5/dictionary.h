@@ -11,10 +11,23 @@
 #define DICTIONARY_H
 
 #include <stdbool.h>
+#include <stdbool.h>
 
 // maximum length for a word
 // (e.g., pneumonoultramicroscopicsilicovolcanoconiosis)
 #define LENGTH 45
+
+/**
+ * Trie data structure
+ */
+typedef struct trie
+{
+    bool is_word;
+    struct trie* alphabet[27];
+}tNode;
+
+// Define a global pointer for the root of the trie data structure
+tNode* root;
 
 /**
  * Returns true if word is in dictionary else false.

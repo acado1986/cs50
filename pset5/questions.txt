@@ -14,8 +14,8 @@
     the "fgetc()" function it reads a character at a time until the end of the file. It itinerates by calling the function once again,
     as a third argument to the loop ( the incrementing argument), moving the reading cursor to the next character. Inside the loop it has 3 corner cases ("if else if" statements) that verifies on each character read if: it is an alphabetical character or an apostrophes and add it to the word container increasing the "index" to the next available position, as well if the word is bigger than maximum lenght (index > lenght) ignore the word by travesing all the string and set index to 0 for the next word; ignore if is a number, travers and set index to zero like above ;if it reacheas the end of the string and it is not a character or a number it founded a word, it terminates with a string end character, updates the count of the words founded, checks for spelling by loking the word in the dictionary (analising the time statistics aswell), print the misspelled word on the screen and set the index variable to 0 to prepare for a new word.
     After exiting the loop it will check for reading errors close the text file, determine the size of the dictionary and unload it (on every function analising the time data). At the end with the help of the print statements will print on the screen the misspelled words, the words in the dictionary, the words in the text and various time datas analisis. 
-5. "fgetc()" has more control on a character
-6.  TODO
+5. When using "fgetc()" function it has more control on the string. By reading each character at a time primarly it avoids a buffer overflow and can check each character for different conditions. "fscanf" reads a string then analises after making it more prone to errors.
+6. The type qualifier "constant" is a keyword applied to a data type that must not vary. In the two functions: "load()" and "check()" the parameter is a string (a pointer to the head of a string under the hood) and it is passed as a reference, without the constant keyword the pointer's data will be changed after the function is ran.
 7.  TODO
 8.  TODO
 9.  TODO
