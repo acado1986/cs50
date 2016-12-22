@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #include "dictionary.h"
 
@@ -27,9 +28,18 @@ bool check(const char* word)
     // check word's letter against trie letters
     for (int i = 0; word[i] != '\0'; i++)
     {
+        // look for apostrophe and asign the last child positon
+        int idx;
+        if (word[i] == 39)
+        {
+            idx = 26;
+        }
         // store the alphabet index resulted from current letter
-        int idx = word[i] -'a';
-        
+        else
+        {
+            idx = tolower(word[i]) - 'a';
+        }
+      
         // check if letter exist
         if (cursor->alphabet[idx] == NULL)
         {
@@ -55,11 +65,13 @@ bool load(const char* dictionary)
     // set counter for words to 0
     num_words = 0;
     
-    // container for word
-    char word[LENGTH+ 1];
+    // container for word, adding the null character
+    char word[LENGTH + 1];
     
-    // allocate space in memory for root
-    root = malloc(sizeof(tNode));
+    // allocate memory and initialize all bits to 0
+    // use calloc() function to avoid valgrind error:
+    // "Conditional jump or move depends on uninitialised value(s)"
+    root = calloc(1, sizeof(tNode));
     if (root == NULL)
     {
         return false;
@@ -76,24 +88,33 @@ bool load(const char* dictionary)
     }
     
     // iterate assuming that there is only one word per line
-    while (!feof(fp))
+    // and no word is bigger then 45 characters
+    // fscanf() will return 0 if failure or EOF value
+    while (fscanf(fp, "%45s", word) == 1)
     {
-        // read word 
-        fgets(word, LENGTH, fp);
-        
-        // reset cursor for each word
+        // reset cursor for each word read
         cursor = root;
         
         // load word in memory
         for (int i = 0; word[i] != '\0'; i++)
         {
+            // look for apostrophe and asign the last child positon
+            int idx;
+            if (word[i] == 39)
+            {
+                idx = 26;
+            }
             // store the alphabet index resulted from current letter
-            int idx = word[i] - 'a';
+            else
+            {
+                idx = tolower(word[i]) - 'a';
+            }
             
             // create new node if doesn't exist
             if (cursor->alphabet[idx] == NULL)
             {
-                tNode* newNode = malloc(sizeof(tNode));
+                // allocate memory and initialize all bits to 0
+                tNode* newNode = calloc(1, sizeof(tNode));
                 if (newNode == NULL)
                 {
                     return false;
@@ -141,11 +162,12 @@ unsigned int size(void)
 /**
  * Function for freeing memory allocated to a trie node
  */
-bool freeNode(tNode* node)
+void freeNode(tNode* node)
 {
-    // iterate through each letter of the word until end
-    for (int i = 0; i < 27; i++)
+    // travel to the lowest  posible node
+    for (int i = 0; i < 26; i++)
     {
+        // if child points to another 
         if (node->alphabet[i] != NULL)
         {
             // call itself for next node
@@ -154,8 +176,8 @@ bool freeNode(tNode* node)
 
     }
     
+    // free the last node
     free(node);
-    return true;
 }
 
 
@@ -165,7 +187,6 @@ bool freeNode(tNode* node)
 bool unload(void)
 {
     // Unload from the bottom up
-    
-    return freeNode(root);
+    freeNode(root);
+    return true;
 }
-
