@@ -32,7 +32,7 @@ bool check(const char* word)
         int idx;
         if (word[i] == 39)
         {
-            idx = 26;
+            idx = 25;
         }
         // store the alphabet index resulted from current letter
         else
@@ -102,7 +102,7 @@ bool load(const char* dictionary)
             int idx;
             if (word[i] == 39)
             {
-                idx = 26;
+                idx = 25;
             }
             // store the alphabet index resulted from current letter
             else
