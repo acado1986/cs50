@@ -81,8 +81,8 @@ bool load(const char* dictionary)
     tNode* cursor;
     
     // open dictionary
-    FILE* fp = fopen(dictionary, "r");
-    if (fp == NULL)
+    FILE* fptr = fopen(dictionary, "r");
+    if (fptr == NULL)
     {
         return false;
     }
@@ -90,7 +90,7 @@ bool load(const char* dictionary)
     // iterate assuming that there is only one word per line
     // and no word is bigger then 45 characters
     // fscanf() will return 0 if failure or EOF value
-    while (fscanf(fp, "%45s", word) == 1)
+    while (fscanf(fptr, "%45s", word) == 1)
     {
         // reset cursor for each word read
         cursor = root;
@@ -139,13 +139,13 @@ bool load(const char* dictionary)
     }
     
     // check for errors during reading
-    if (ferror(fp))
+    if (ferror(fptr))
     {
         return false;
     }
     
     // close dictionary
-    fclose(fp);
+    fclose(fptr);
     
     // all is loaded
     return true;
