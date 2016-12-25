@@ -1,0 +1,9 @@
+1   change clang optimization from O0 to fast - 0.1  second slower than O3 = NOT CONCLUSIVE
+2   change 'a' letter to int 97 = less castings - 3.08 seconds improvemet = GOOD
+3   change struct member bool type into a long int for removed padding - not supported by speller.c code funcions return boolean = NOT SUPPORTED
+4   use unsigned int instead of int =  NO DIFFERENCE
+5   not using tolower() function in load() because the dictionaries have lowercase words - 0.1 second improvement  = GOOD
+6   assign global variables to local variables in critical functions (registers) -  0.1 seconds improvement = GOOD
+7   optimize loops arguments - 0.6 seconds slower = VERY BAD
+8   lowercase letter in check with or bitwise operand = IRRELEVANT SAME OUTPUT
+9   increase alphabet array size to 31 for a better cache reading line - 0.3 seconds slower = BAD
