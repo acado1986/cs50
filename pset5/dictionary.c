@@ -3,8 +3,14 @@
  *
  * Computer Science 50
  * Problem Set 5
+ * 
+ * Bogdan Ioan Nechifor
  *
  * Implements a dictionary's functionality.
+ * 
+ * Used some tips for better performance in speed from this article written
+ * by Koushik Ghosh, an indian software developer for IBM.The website link 
+ * http://tinyurl.com/zjznk23
  */
 
 #include <stdbool.h>
@@ -14,7 +20,7 @@
 
 #include "dictionary.h"
 
-// global viarible for size function
+// global variable for size() function
 unsigned int num_words;
 
 /**
@@ -26,10 +32,10 @@ bool check(const char* word)
     tNode* cursor = root;
     
     // check word's letter against trie letters
-    for (int i = 0; word[i] != '\0'; i++)
+    for (unsigned int i = 0; word[i] != '\0'; i++)
     {
-        // look for apostrophe and asign the last child positon
-        int idx;
+        // look for apostrophe and assign the last child positon
+        unsigned int idx;
         if (word[i] == 39)
         {
             idx = 25;
@@ -37,7 +43,9 @@ bool check(const char* word)
         // store the alphabet index resulted from current letter
         else
         {
-            idx = tolower(word[i]) - 'a';
+            // tolower() function same performance as the bitwise | operators
+            // extract index by substracting value 97 ASCII code for 'a' 
+            idx = tolower(word[i]) - 97;
         }
       
         // check if letter exist
@@ -63,7 +71,8 @@ bool check(const char* word)
 bool load(const char* dictionary)
 {
     // set counter for words to 0
-    num_words = 0;
+    // set local variable copy for optimization
+    int local_words = 0;
     
     // container for word, adding the null character
     char word[LENGTH + 1];
@@ -96,10 +105,10 @@ bool load(const char* dictionary)
         cursor = root;
         
         // load word in memory
-        for (int i = 0; word[i] != '\0'; i++)
+        for (unsigned int i = 0; word[i] != '\0'; i++)
         {
             // look for apostrophe and asign the last child positon
-            int idx;
+            unsigned int idx;
             if (word[i] == 39)
             {
                 idx = 25;
@@ -107,7 +116,8 @@ bool load(const char* dictionary)
             // store the alphabet index resulted from current letter
             else
             {
-                idx = tolower(word[i]) - 'a';
+                // extract index
+                idx = word[i] - 97; 
             }
             
             // create new node if doesn't exist
@@ -135,7 +145,9 @@ bool load(const char* dictionary)
         
         // add flag for finished word
         cursor->is_word = true;
-        num_words++;
+        
+        // increase word in dictionary count
+        local_words++;
     }
     
     // check for errors during reading
@@ -143,6 +155,9 @@ bool load(const char* dictionary)
     {
         return false;
     }
+    
+    // store the number of words into the global variable
+    num_words = local_words;
     
     // close dictionary
     fclose(fptr);
@@ -165,18 +180,17 @@ unsigned int size(void)
 void freeNode(tNode* node)
 {
     // travel to the lowest  posible node
-    for (int i = 0; i < 26; i++)
+    for (unsigned int i = 0; i < 26; i++)
     {
-        // if child points to another 
+        // if child points to another another node
         if (node->alphabet[i] != NULL)
         {
             // call itself for next node
             freeNode(node->alphabet[i]);
         }
-
     }
     
-    // free the last node
+    // free node
     free(node);
 }
 

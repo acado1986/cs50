@@ -21,8 +21,8 @@
  */
 typedef struct trie
 {
-    bool is_word;
     struct trie* alphabet[26];
+    bool is_word;
 }tNode;
 
 // Define a global pointer for the root of the trie data structure
