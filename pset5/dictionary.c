@@ -38,7 +38,7 @@ bool check(const char* word)
         unsigned int idx;
         if (word[i] == 39)
         {
-            idx = 25;
+            idx = 26;
         }
         // store the alphabet index resulted from current letter
         else
@@ -111,7 +111,7 @@ bool load(const char* dictionary)
             unsigned int idx;
             if (word[i] == 39)
             {
-                idx = 25;
+                idx = 26;
             }
             // store the alphabet index resulted from current letter
             else
@@ -179,15 +179,15 @@ unsigned int size(void)
  */
 void freeNode(tNode* node)
 {
+    // base case
+    if (node == NULL)
+        return;
+        
     // travel to the lowest  posible node
-    for (unsigned int i = 0; i < 26; i++)
+    for (unsigned int i = 0; i < 27; i++)
     {
-        // if child points to another another node
-        if (node->alphabet[i] != NULL)
-        {
             // call itself for next node
             freeNode(node->alphabet[i]);
-        }
     }
     
     // free node

@@ -21,7 +21,7 @@
  */
 typedef struct trie
 {
-    struct trie* alphabet[26];
+    struct trie* alphabet[27];
     bool is_word;
 }tNode;
 
