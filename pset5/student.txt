@@ -1,0 +1,4 @@
+Reading symbols from ./speller...done.
+(gdb) (gdb) 
+(gdb) qqq(gdb) (gdb) q]
+(gdb) q

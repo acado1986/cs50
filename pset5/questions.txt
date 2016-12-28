@@ -18,7 +18,7 @@
 6. The type qualifier "constant" is a keyword applied to a data type that must not vary. In the two functions: "load()" and "check()" the parameter is a string (a pointer to the head of a string under the hood) and it is passed as a reference, without the constant keyword the pointer's data will be changed after the function is ran.
 7. The data structured used is a trie. It has two members a boolean value flag that is raised when a word is ending and the other member is an array of 26 pointers to nodes that have the same structure
     The word is loaded into memory one letter at a time and each letter is converted into an index for the array. The index represents the letter 0 to 26 a to z, and to store a letter to corresponded position is initialiazed and malloc'd
-8. The first time running the code the performance was 2 times slower than the implementation staff's execuable. 
+8. The first time running the code the performance was 6 times slower than the implementation staff's execuable. 
 9. After searching on google I have encountered an article written by a Indian software engineer ,Koushik Ghosh, with some improvement tips. I tried every aplicable tip and after various test concluded that only
     three modifications made some difference: arthmetic with integer's is faster than with char's, in itinerating the lenght of a word is faster comparing character '\0' to end a loop than calling the strlen() function,
     and the third that made little difference was to make a local copy of a global variable in some functions.
