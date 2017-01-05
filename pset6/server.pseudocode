@@ -1,0 +1,3 @@
+lookup function
+find the last "." in the path with strrchar() that returns a pointer to that char.
+compare extensions found in path with knowed extensions and return ex. "text/css"

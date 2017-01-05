@@ -618,8 +618,25 @@ bool load(FILE* file, BYTE** content, size_t* length)
  */
 const char* lookup(const char* path)
 {
-    // TODO
-    return NULL;
+    // initialize return variable
+    char text[20] = ;
+    
+    // search path for the extension of the file
+    // the last ocurrence of '.' char will indicate the beggining of the extension's type
+    char *extension = strrchr(path, '.');
+    
+    // Compare extension with kown one's
+    if (strcasecmp(".css", extension) == 0 || strcasecmp(".html", extension) == 0 
+        || strcasecmp(".gif", extension) == 0 || strcasecmp(".jpg", extension) == 0
+        || strcasecmp(".js", extension) == 0 || strcasecmp(".php", extension) == 0
+        || strcasecmp(".png", extension) == 0)
+    {
+        return strcpy(text, &extension[1]);
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 /**
