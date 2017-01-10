@@ -619,19 +619,50 @@ bool load(FILE* file, BYTE** content, size_t* length)
 const char* lookup(const char* path)
 {
     // initialize return variable
-    char text[20] = ;
+    char *text = NULL; 
     
     // search path for the extension of the file
     // the last ocurrence of '.' char will indicate the beggining of the extension's type
     char *extension = strrchr(path, '.');
     
     // Compare extension with kown one's
-    if (strcasecmp(".css", extension) == 0 || strcasecmp(".html", extension) == 0 
-        || strcasecmp(".gif", extension) == 0 || strcasecmp(".jpg", extension) == 0
-        || strcasecmp(".js", extension) == 0 || strcasecmp(".php", extension) == 0
-        || strcasecmp(".png", extension) == 0)
+    if (strcasecmp(".css", extension) == 0)
     {
-        return strcpy(text, &extension[1]);
+	    sprintf(text, "text/css");
+	    return text;
+    }
+    else if ( strcasecmp(".html", extension) == 0) 
+    {
+	    sprintf(text, "text/html");
+	    return text;
+
+    }
+    else if ( strcasecmp(".js", extension) == 0) 
+    {
+	    sprintf(text, "text/javascript");
+	    return text;
+
+    }
+    else if ( strcasecmp(".php", extension) == 0) 
+    {
+ 	    sprintf(text, "text/x-php");
+    	    return text;
+    }
+    else if ( strcasecmp(".gif", extension) == 0) 
+    {
+ 	    sprintf(text, "image/gif");
+    	    return text;
+    }
+    else if ( strcasecmp(".jpg", extension) == 0) 
+    {
+ 	    sprintf(text, "image/jpg");
+    	    return text;
+    }
+    else if ( strcasecmp(".png", extension) == 0) 
+    {
+	    sprintf(text, "image/png");
+	    return text;
+
     }
     else
     {
@@ -646,9 +677,44 @@ const char* lookup(const char* path)
  */
 bool parse(const char* line, char* abs_path, char* query)
 {
-    // TODO
-    error(501);
-    return false;
+	char buffer[sizeof(line) + 1];
+	strcpy(buffer, line);
+	// extract method
+	const char *method = strtok(buffer, " ");
+	if (method == NULL || strstr(method, "GET") == NULL)
+	{
+		error(405);
+		return false;
+	}
+
+	// extract temporary path plus query
+	char *abs_path_query = strtok(NULL, " ");
+
+	// extract version
+	char *http_version = strtok(NULL, " \r\n");
+	if (http_version == NULL || strstr(http_version, "HTTP/1.1") == NULL)
+	{
+		error(505);
+		return false;
+	}
+
+	// extract path from temporary varible
+	abs_path = strtok(abs_path_query, "?");
+	if (abs_path == NULL || abs_path[0] != '/')
+	{
+		error(501);
+		return false;
+	}
+
+	// extract query form temporary variable
+	query = strtok(NULL, "?");
+	if (query != NULL && strchr(query, '\"') != NULL)
+	{
+		error(400);
+		return false;
+	}
+
+    return true;
 }
 
 /**
