@@ -3,7 +3,14 @@ find the last "." in the path with strrchar() that returns a pointer to that cha
 compare extensions found in path with knowed extensions and return ex. "text/css"
 
 parse function
-get method-request
-search for get method
-search for http/1.1
+create a variable to search in text
+search for method GET
+search for HTTP-version
+extract request-target: start string, end string
+request-target begins with /
+request-targett doesn't contain "
 
+query
+extract abs_path
+extract query
+    if query null then "", even if request-target contains ?
