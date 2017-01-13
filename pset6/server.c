@@ -677,43 +677,98 @@ const char* lookup(const char* path)
  */
 bool parse(const char* line, char* abs_path, char* query)
 {
-	char buffer[sizeof(line) + 1];
-	strcpy(buffer, line);
-	// extract method
-	const char *method = strtok(buffer, " ");
-	if (method == NULL || strstr(method, "GET") == NULL)
-	{
-		error(405);
-		return false;
-	}
-
-	// extract temporary path plus query
-	char *abs_path_query = strtok(NULL, " ");
-
-	// extract version
-	char *http_version = strtok(NULL, " \r\n");
-	if (http_version == NULL || strstr(http_version, "HTTP/1.1") == NULL)
-	{
-		error(505);
-		return false;
-	}
-
-	// extract path from temporary varible
-	abs_path = strtok(abs_path_query, "?");
-	if (abs_path == NULL || abs_path[0] != '/')
-	{
-		error(501);
-		return false;
-	}
-
-	// extract query form temporary variable
-	query = strtok(NULL, "?");
-	if (query != NULL && strchr(query, '\"') != NULL)
-	{
-		error(400);
-		return false;
-	}
-
+    char *needle;
+    
+    // only GET method allowed, line must begin with word 'GET'
+    if (line[0] != 'G' || line[3] != ' ')
+    {
+        error(405);
+        return false;
+    }
+    
+    // only HTTP/1.1 allowed
+    needle = strstr(line, "HTTP/1.1");
+    if (needle == NULL)
+    {
+        error(505);
+        return false;
+    }
+    
+    // defined as "method SP request-target SP HTTP-version CRLF"
+    // extract request-target from line by using space as delimeter
+    char *begin_string, *end_string;
+    
+    // string saved as "SPrequestmethod"
+    begin_string = strchr(line, ' ');
+    
+    // search past the space at the beginning of begin_string
+    end_string = strchr(&begin_string[1], ' ');
+    
+    // variable array to hold request-target
+    // lenght of string including the nul char
+    int len = end_string - begin_string;
+    char request_target[len];
+    strncpy(request_target, &begin_string[1], len);
+    request_target[len - 1] = '\0';
+    
+    // request_target doesn't exist
+    if (len <= 1)
+    {
+        error(404);
+        return false;
+    }
+    
+    // request-target must begin with '/'
+    if (request_target[0] != '/')
+    {
+        error(501);
+        return false;
+    }
+    
+    // request-target must not contain '"'
+    needle = strchr(request_target, '"');
+    if (needle != NULL)
+    {
+        error(400);
+        return false;
+    }
+    
+    // only one space after method allowed
+    if (begin_string[1] != '/')
+    {
+        error(400);
+        return false;
+    }
+    
+    // only one space allowed between request-target and HTTP-version
+    if (end_string[1] != 'H')
+    {
+        error(400);
+        return false;
+    }
+    
+    // extract absolute path and query
+    needle = strchr(request_target, '?');
+    
+    // no query in request-target
+    if (needle == NULL)
+    {
+        strcpy(abs_path,request_target);
+        
+        // make query an empty string
+        query[0] = '\0';
+    }
+    
+    // with query or at least the ? char in request-target
+    else if (&needle[1] != NULL)
+    {
+        strcpy(query, &needle[1]);
+        
+        // extract absolute path 
+        *needle = '\0';
+        strcpy(abs_path,request_target);
+    }
+    
     return true;
 }
 
