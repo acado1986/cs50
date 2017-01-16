@@ -609,8 +609,38 @@ void list(const char* path)
  */
 bool load(FILE* file, BYTE** content, size_t* length)
 {
-    // TODO
-    return false;
+	// initialize length
+	*length = 0;
+
+    	// read from file, BYTES size at a time
+    	BYTE buffer[BYTES];
+    	size_t bytes = fread(buffer, 1, BYTES, file);
+    	for (;bytes != EOF; bytes = fread(buffer, 1, BYTES, file))
+    	{
+		// realloc memory each read
+	    	// first realloc will the same as alloc
+	    	*content = realloc(*content, *length + bytes);
+		if (content == NULL)
+		{
+			*length = 0;
+			return false;
+		}
+
+		// append bytes from buffer to content
+		memcpy(*content + *length, buffer, bytes);
+
+		// increase length 
+		*length += bytes;
+    	}	
+
+	// search for errors
+	if (ferror)
+	{
+		*length = 0;
+		return false;	
+	}
+
+    return true;
 }
 
 /**
@@ -618,9 +648,6 @@ bool load(FILE* file, BYTE** content, size_t* length)
  */
 const char* lookup(const char* path)
 {
-    // initialize return variable
-    char *text = NULL; 
-    
     // search path for the extension of the file
     // the last ocurrence of '.' char will indicate the beggining of the extension's type
     char *extension = strrchr(path, '.');
@@ -628,40 +655,33 @@ const char* lookup(const char* path)
     // Compare extension with kown one's
     if (strcasecmp(".css", extension) == 0)
     {
-	    sprintf(text, "text/css");
-	    return text;
+	    return "text/css";
     }
     else if ( strcasecmp(".html", extension) == 0) 
     {
-	    sprintf(text, "text/html");
-	    return text;
+	    return "text/html";
 
     }
     else if ( strcasecmp(".js", extension) == 0) 
     {
-	    sprintf(text, "text/javascript");
-	    return text;
+	    return "text/javascript";
 
     }
     else if ( strcasecmp(".php", extension) == 0) 
     {
- 	    sprintf(text, "text/x-php");
-    	    return text;
+    	    return "text/x-php";
     }
     else if ( strcasecmp(".gif", extension) == 0) 
     {
- 	    sprintf(text, "image/gif");
-    	    return text;
+    	    return "image/gif";
     }
     else if ( strcasecmp(".jpg", extension) == 0) 
     {
- 	    sprintf(text, "image/jpg");
-    	    return text;
+    	    return "image/jpg";
     }
     else if ( strcasecmp(".png", extension) == 0) 
     {
-	    sprintf(text, "image/png");
-	    return text;
+	    return "image/png";
 
     }
     else
@@ -705,7 +725,7 @@ bool parse(const char* line, char* abs_path, char* query)
     end_string = strchr(&begin_string[1], ' ');
     
     // variable array to hold request-target
-    // lenght of string including the nul char
+    // length of string including the nul char
     int len = end_string - begin_string;
     char request_target[len];
     strncpy(request_target, &begin_string[1], len);
