@@ -444,8 +444,37 @@ char* htmlspecialchars(const char* s)
  */
 char* indexes(const char* path)
 {
-    // TODO
-    return NULL;
+    // allocate heap memory for the return value
+    char *index = malloc(strlen(path) + 12 * sizeof(char));
+    
+    // php and html files name's
+    char *php_index = "/index.php";
+    char *html_index = "/index.html";
+    
+    // concatenate path and php index file
+    strcpy(index, path);
+    strcat(index,php_index);
+    
+    // index.php file exist's
+    if (access(index, F_OK) == 0)
+    {
+        return index;
+    }
+    
+    //concatenate path and html index file
+    strcpy(index, path);
+    strcat(index, html_index);
+    
+    // index.html exist's
+    if (access(index, F_OK) == 0)
+    {
+        return index;
+    }
+    else
+    {
+        free(index);
+        return NULL;
+    }
 }
 
 /**
@@ -609,31 +638,31 @@ void list(const char* path)
  */
 bool load(FILE* file, BYTE** content, size_t* length)
 {
-	// initialize content and length
-	*content = NULL;
-	*length = 0;
-
-    	// read from file, BYTES size at a time
-    	BYTE buffer[BYTES];
-    	size_t bytes = fread(buffer, 1, BYTES, file);
-    	for (;bytes > 0; bytes = fread(buffer, 1, BYTES, file))
-    	{
-		// realloc memory each read
-	    	// first realloc will the same as alloc
-	    	*content = realloc(*content, *length + bytes);
-		if (content == NULL)
-		{
-			*length = 0;
-			return false;
-		}
-
-		// append bytes from buffer to content
-		memcpy(*content + *length, buffer, bytes);
-
-		// increase length 
-		*length += bytes;
-    	}	
-
+    // initialize content and length
+    *content = NULL;
+    *length = 0;
+    
+    // read from file, BYTES size at a time
+    BYTE buffer[BYTES];
+    size_t bytes = fread(buffer, 1, BYTES, file);
+    for (;bytes > 0; bytes = fread(buffer, 1, BYTES, file))
+    {
+        // realloc memory each read
+        // first realloc will the same as alloc
+        *content = realloc(*content, *length + bytes);
+    if (content == NULL)
+    {
+        *length = 0;
+        return false;
+    }
+    
+        // append bytes from buffer to content
+        memcpy(*content + *length, buffer, bytes);
+        
+        // increase length 
+        *length += bytes;
+    }	
+    
     return true;
 }
 
@@ -671,12 +700,15 @@ const char* lookup(const char* path)
     }
     else if ( strcasecmp(".jpg", extension) == 0) 
     {
-    	    return "image/jpg";
+    	    return "image/jpeg";
     }
     else if ( strcasecmp(".png", extension) == 0) 
     {
 	    return "image/png";
-
+    }
+    else if ( strcasecmp(".ico", extension) == 0)
+    {
+        return "image/x-icon";
     }
     else
     {
