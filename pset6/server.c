@@ -609,21 +609,15 @@ void list(const char* path)
  */
 bool load(FILE* file, BYTE** content, size_t* length)
 {
-	// initialize length
+	// initialize content and length
+	*content = NULL;
 	*length = 0;
 
     	// read from file, BYTES size at a time
     	BYTE buffer[BYTES];
     	size_t bytes = fread(buffer, 1, BYTES, file);
-    	for (;bytes != EOF; bytes = fread(buffer, 1, BYTES, file))
+    	for (;bytes > 0; bytes = fread(buffer, 1, BYTES, file))
     	{
-		// search for errors
-		if (ferror(bytes))
-		{
-			*length = 0;
-			return false;	
-		}
-
 		// realloc memory each read
 	    	// first realloc will the same as alloc
 	    	*content = realloc(*content, *length + bytes);
@@ -725,7 +719,8 @@ bool parse(const char* line, char* abs_path, char* query)
     end_string = strchr(&begin_string[1], ' ');
     
     // variable array to hold request-target
-    // length of string including the nul char int len = end_string - begin_string;
+    // length of string including the nul char 
+    int len = end_string - begin_string;
     char request_target[len];
     strncpy(request_target, &begin_string[1], len);
     request_target[len - 1] = '\0';
