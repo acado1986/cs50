@@ -1,8 +1,6 @@
 import crypt
-import sys
 import argparse
 import itertools
-from pathlib import Path
 import time
 
 def main():
