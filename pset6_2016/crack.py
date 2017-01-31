@@ -20,7 +20,7 @@ def main():
     # store supplied dictionary or default
     dictionary = args.dictionary
     
-    # store file or encrypted text
+    # store encrypted text
     encrypted_text= args.chiphertext 
     
     # decrypt using a dictionary
