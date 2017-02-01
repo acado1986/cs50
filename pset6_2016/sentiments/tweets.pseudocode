@@ -1,0 +1,6 @@
+Complete the implementation of main in tweets in such a way that program
+
+accepts one and only one command-line argument, the screen name for a user on Twitter,
+queries Twitter’s API for a user’s most recent 50 tweets,
+analyzes the sentiment of each of those tweets, 
+and outputs each tweet’s score and text, colored in green if positive, red if negative, and yellow otherwise.

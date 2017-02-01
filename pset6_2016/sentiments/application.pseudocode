@@ -1,0 +1,6 @@
+Complete the implementation of search in application.py in such a way that the function
+
+queries Twitter’s API for a user’s most recent 100 tweets,
+classifies each tweet as positive, negative, or neutral,
+generates a chart that accurately depicts those sentiments as percentages.
+If a user has tweeted fewer than 100 times, classify as many tweets as exist.
