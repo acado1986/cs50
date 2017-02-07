@@ -19,9 +19,27 @@ def search():
 
     # get screen_name's tweets
     tweets = helpers.get_user_timeline(screen_name)
-
-    # TODO
+    if tweets == None:
+        return redirect(url_for("index"))
+    
+    # absolute path to list of negative and positives words
+    positives =  "positive-words.txt"
+    negatives = "negative-words.txt"
+    
+    # instantiate analyzer
+    analyzer = Analyzer(positives, negatives)
+    
+    # default values 
     positive, negative, neutral = 0.0, 0.0, 100.0
+    
+    # analyze tweets
+    for tweet in tweets:
+        score = analyzer.analyze(tweet)
+        if score > 0.0:
+            positive = score
+        elif score < 0.0:
+            negative = score
+            
 
     # generate chart
     chart = helpers.chart(positive, negative, neutral)

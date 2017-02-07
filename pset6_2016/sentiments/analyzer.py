@@ -1,4 +1,5 @@
 import nltk
+from collections import Counter
 
 class Analyzer():
     """Implements sentiment analysis."""
@@ -16,10 +17,11 @@ class Analyzer():
     def analyze(self, text):
         """Analyze text for sentiment, returning its score."""
         # tokenize text
-        tokens = nltk.wordpunct_tokenize(text)
+        tokenizer = nltk.tokenize.TweetTokenizer()
+        tokens = tokenizer.tokenize(text)
         
         # return result
-        pos = len(self.positives.intersection(tokens))
-        neg = len(self.negatives.intersection(tokens))
+        pos = sum(Counter(word for word in tokens if word.lower() in self.positives).values())
+        neg = sum(Counter(word for word in tokens if word.lower() in self.negatives).values())
         return pos - neg
         

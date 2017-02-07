@@ -14,7 +14,7 @@ def main():
         sys.exit("Usage: ./tweets @screen_name")
         
     # get users tweets
-    timeline = helpers.get_user_timeline(sys.argv[1], 50)
+    timeline = helpers.get_user_timeline(sys.argv[1].lstrip("@"), 50)
     if timeline == None:
         sys.exit("could not retrieve tweets")
     
@@ -29,11 +29,11 @@ def main():
     for tweet in timeline:
         score = analyzer.analyze(tweet)
         if score > 0.0:
-            print(colored("{} {}".format(score, tweet), "green"))
+            print(colored("  {} {}".format(score, tweet), "green"))
         elif score < 0.0:
-            print(colored("{} {}".format(score, tweet), "red"))
+            print(colored("  {} {}".format(score, tweet), "red"))
         else:
-            print(colored("{} {}".format(score, tweet), "yellow"))
+            print(colored("  {} {}".format(score, tweet), "yellow"))
            
 if __name__ == "__main__":
     main()
