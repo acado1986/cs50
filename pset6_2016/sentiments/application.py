@@ -36,10 +36,11 @@ def search():
     for tweet in tweets:
         score = analyzer.analyze(tweet)
         if score > 0.0:
-            positive = score
+            positive += 1
         elif score < 0.0:
-            negative = score
+            negative += 1
             
+    neutral -= (positive + negative)
 
     # generate chart
     chart = helpers.chart(positive, negative, neutral)
