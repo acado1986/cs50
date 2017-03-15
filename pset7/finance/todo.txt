@@ -1,0 +1,48 @@
+display
+display form
+	create a register.html
+		borrow form login.html
+		need to add a password confirmation field
+		via POST reguest
+	in python
+		retrive the post with request.form.get("name")
+valid passwords?
+	make sure fields aren't left blank
+		else apologize
+			return apology "Missing username!")
+	make sure password and confirmation match
+		else apologize
+	hash the password
+		pwd_context.encrypt
+add user to database
+	username is unique
+	db.execute failure
+		result = db.execute()
+		if not result:
+			return apology("")
+	ex. db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)", username=reguest.form.get("username"), hash=hash)
+log them in
+	after successfully registered log them automatically
+	store their id in session
+		session["user_id"]
+	
+quote
+
+display form
+	quote.html
+		form for stock lookup
+		form input: symbol the user wants to lookup
+retrieve stock quote
+lookup
+	quote = lookup("AAPL")
+		return a dict
+			name , price , symbol
+display stock quote
+another template
+	ensure the stock is valid
+	else : another apology
+
+@app.route("/hello")
+def hello():
+	""" say hello."""
+	return render_template("hello.html", name="World")

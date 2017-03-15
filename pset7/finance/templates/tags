@@ -1,0 +1,101 @@
+	../templates/finance.vim	/^map   \/$/;"	m
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+#	../templates/finance.vim	/^vnoremap <silent> # :call VisualSelection('b', '')$/;"	m
+*	../templates/finance.vim	/^vnoremap <silent> * :call VisualSelection('f', '')$/;"	m
+,	../templates/finance.vim	/^map <silent> ,$/;"	m
+,ba	../templates/finance.vim	/^map ,ba :1,1000 bd!$/;"	m
+,bd	../templates/finance.vim	/^map ,bd :Bclose$/;"	m
+,cc	../templates/finance.vim	/^map ,cc :botright cope$/;"	m
+,cd	../templates/finance.vim	/^map ,cd :cd %:p:h$/;"	m
+,co	../templates/finance.vim	/^map ,co ggVGy:tabnew$/;"	m
+,g	../templates/finance.vim	/^map ,g :Ack $/;"	m
+,h	../templates/finance.vim	/^map ,h h$/;"	m
+,j	../templates/finance.vim	/^map ,j j$/;"	m
+,k	../templates/finance.vim	/^map ,k k$/;"	m
+,l	../templates/finance.vim	/^map ,l l$/;"	m
+,m	../templates/finance.vim	/^noremap ,m mmHmt:%s\/$/;"	m
+,n	../templates/finance.vim	/^map ,n :cn$/;"	m
+,p	../templates/finance.vim	/^map ,p :cp$/;"	m
+,pp	../templates/finance.vim	/^map ,pp :setlocal paste!$/;"	m
+,q	../templates/finance.vim	/^map ,q :e ~\/buffer$/;"	m
+,r	../templates/finance.vim	/^vnoremap <silent> ,r :call VisualSelection('replace', '')$/;"	m
+,s?	../templates/finance.vim	/^map ,s? z=$/;"	m
+,sa	../templates/finance.vim	/^map ,sa zg$/;"	m
+,sn	../templates/finance.vim	/^map ,sn ]s$/;"	m
+,sp	../templates/finance.vim	/^map ,sp [s$/;"	m
+,ss	../templates/finance.vim	/^map ,ss :setlocal spell!$/;"	m
+,t,	../templates/finance.vim	/^map ,t, :tabnext $/;"	m
+,tc	../templates/finance.vim	/^map ,tc :tabclose$/;"	m
+,te	../templates/finance.vim	/^map ,te :tabedit =expand("%:p:h")$/;"	m
+,tm	../templates/finance.vim	/^map ,tm :tabmove $/;"	m
+,tn	../templates/finance.vim	/^map ,tn :tabnew$/;"	m
+,to	../templates/finance.vim	/^map ,to :tabonly$/;"	m
+,w	../templates/finance.vim	/^map ,w w$/;"	m
+,x	../templates/finance.vim	/^map ,x :e ~\/buffer.md$/;"	m
+0	../finance.vim	/^normal! 0$/;"	m
+0	../templates/finance.vim	/^map 0 ^$/;"	m
+0	../templates/finance.vim	/^normal! 0$/;"	m
+012|	../finance.vim	/^normal! 012|$/;"	m
+012|	../templates/finance.vim	/^normal! 012|$/;"	m
+02|	../templates/finance.vim	/^normal! 02|$/;"	m
+036|	../templates/finance.vim	/^normal! 036|$/;"	m
+074|	../finance.vim	/^normal! 074|$/;"	m
+;	../finance.vim	/^nnoremap ; :$/;"	m
+;	../templates/finance.vim	/^nnoremap ; :$/;"	m
+<C-Space>	../templates/finance.vim	/^map <C-Space> ?$/;"	m
+<Plug>NetrwBrowseX	../finance.vim	/^nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)$/;"	m
+<Plug>NetrwBrowseX	../templates/finance.vim	/^nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)$/;"	m
+SessionLoad	../finance.vim	/^let SessionLoad = 1$/;"	v
+SessionLoad	../templates/finance.vim	/^let SessionLoad = 1$/;"	v
+\w	../finance.vim	/^map \\w $/;"	m
+\w	../templates/finance.vim	/^map \\w $/;"	m
+after_request	../application.py	/^    def after_request(response):$/;"	f
+apology	../helpers.py	/^def apology(top="", bottom=""):$/;"	f
+app	../application.py	/^app = Flask(__name__)$/;"	v
+buy	../application.py	/^def buy():$/;"	f
+db	../application.py	/^db = SQL("sqlite:\/\/\/finance.db")$/;"	v
+decorated_function	../helpers.py	/^    def decorated_function(*args, **kwargs):$/;"	f	function:login_required
+escape	../helpers.py	/^    def escape(s):$/;"	f	function:apology
+gv	../templates/finance.vim	/^vnoremap <silent> gv :call VisualSelection('gv', '')$/;"	m
+gx	../finance.vim	/^nmap gx <Plug>NetrwBrowseX$/;"	m
+gx	../templates/finance.vim	/^nmap gx <Plug>NetrwBrowseX$/;"	m
+history	../application.py	/^def history():$/;"	f
+index	../application.py	/^def index():$/;"	f
+j	../templates/finance.vim	/^map j gj$/;"	m
+k	../templates/finance.vim	/^map k gk$/;"	m
+login	../application.py	/^def login():$/;"	f
+login_required	../helpers.py	/^def login_required(f):$/;"	f
+logout	../application.py	/^def logout():$/;"	f
+lookup	../helpers.py	/^def lookup(symbol):$/;"	f
+quote	../application.py	/^def quote():$/;"	f
+register	../application.py	/^def register():$/;"	f
+s:cpo_save	../finance.vim	/^let s:cpo_save=&cpo$/;"	v
+s:cpo_save	../templates/finance.vim	/^let s:cpo_save=&cpo$/;"	v
+s:l	../finance.vim	/^let s:l = 1 - ((0 * winheight(0) + 8) \/ 16)$/;"	v
+s:l	../finance.vim	/^let s:l = 1 - ((0 * winheight(0) + 9) \/ 18)$/;"	v
+s:l	../finance.vim	/^let s:l = 19 - ((18 * winheight(0) + 17) \/ 35)$/;"	v
+s:l	../finance.vim	/^let s:l = 82 - ((32 * winheight(0) + 17) \/ 35)$/;"	v
+s:l	../templates/finance.vim	/^let s:l = 11 - ((7 * winheight(0) + 8) \/ 16)$/;"	v
+s:l	../templates/finance.vim	/^let s:l = 24 - ((22 * winheight(0) + 17) \/ 34)$/;"	v
+s:l	../templates/finance.vim	/^let s:l = 81 - ((23 * winheight(0) + 17) \/ 34)$/;"	v
+s:l	../templates/finance.vim	/^let s:l = 9 - ((8 * winheight(0) + 8) \/ 16)$/;"	v
+s:l	../templates/finance.vim	/^let s:l = 9 - ((8 * winheight(0) + 8) \/ 17)$/;"	v
+s:so_save	../finance.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:so_save	../templates/finance.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:sx	../finance.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:sx	../templates/finance.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:wipebuf	../finance.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+s:wipebuf	../templates/finance.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+sell	../application.py	/^def sell():$/;"	f
+usd	../helpers.py	/^def usd(value):$/;"	f
+zt	../finance.vim	/^normal! zt$/;"	m
+zt	../templates/finance.vim	/^normal! zt$/;"	m
+ê	../templates/finance.vim	/^nmap ê mz:m+$/;"	m
+ê	../templates/finance.vim	/^vmap ê :m'>+$/;"	m
+ë	../templates/finance.vim	/^nmap ë mz:m-2$/;"	m
+ë	../templates/finance.vim	/^vmap ë :m'<-2$/;"	m
