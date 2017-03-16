@@ -96,7 +96,20 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    return render_template("quote.html")
+
+    # if a symbol is searched via POST method
+    if request.method == "POST":
+
+        # lookup quote
+        quote = lookup(request.form.get("symbol")
+
+        # show result
+
+        return render_template("quote.html")
+    # render form to search a symbol
+    else:
+        return render_template("quote.html")
+    dump()
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
