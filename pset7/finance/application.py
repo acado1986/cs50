@@ -51,10 +51,10 @@ def history():
 def login():
     """Log user in."""
 
-    # forget any user_id
+# forget any user_id
     session.clear()
 
-    # if user reached route via POST (as by submitting a form via POST)
+# if user reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
         # ensure username was submitted
@@ -78,7 +78,7 @@ def login():
         # redirect user to home page
         return redirect(url_for("index"))
 
-    # else if user reached route via GET (as by clicking a link or via redirect)
+# else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
 
@@ -86,10 +86,10 @@ def login():
 def logout():
     """Log user out."""
 
-    # forget any user_id
+# forget any user_id
     session.clear()
 
-    # redirect user to login form
+# redirect user to login form
     return redirect(url_for("login"))
 
 @app.route("/quote", methods=["GET", "POST"])
@@ -101,13 +101,12 @@ def quote():
     if request.method == "POST":
 
         # lookup quote
-        quote = lookup(request.form.get("symbol")
+        quote = lookup(request.form.get("symbol"))
 
         # show result
-
-        return render_template("quote.html")
+        return render_template("quoted.html", name=quote["name"], price=quote["price"], symbol=quote["symbol"])
     # render form to search a symbol
-    else:
+    elif request.method == "GET":
         return render_template("quote.html")
     dump()
 
