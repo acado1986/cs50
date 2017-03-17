@@ -39,7 +39,24 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock."""
-    return apology("TODO")
+    if request.method == "POST":
+
+        # check if input values are valid
+        if request.form.get("shares", type=int) <= 0:
+            return apology("shares amount is negative", "input a positve number")
+
+        # get stock data
+        stock = lookup(request.form.get("symbol"))
+        if stock == None:
+            return apology("stock symbol doesn't exits", "try again")
+
+        # check if the user can afford to buy
+        cash = db.execute("SELECT cash FROM users WHERE id=:user_id", user_id=session["user_id"])
+        if cash[0]["cash"]<= request.form.get("shares", type=int) * stock["price"]:
+           return apology("You can afford to buy", "Try buying less")
+
+    else:
+        return render_template("buy.html")
 
 @app.route("/history")
 @login_required
