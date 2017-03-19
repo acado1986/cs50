@@ -41,20 +41,40 @@ def buy():
     """Buy shares of stock."""
     if request.method == "POST":
 
-        # check if input values are valid
-        if request.form.get("shares", type=int) <= 0:
-            return apology("shares amount is negative", "input a positve number")
-
-        # get stock data
+        # save required data for buying
+        shares = request.form.get("shares", type=int)
         stock = lookup(request.form.get("symbol"))
+        user_cash = db.execute("SELECT cash FROM users WHERE id=:user_id", user_id=session["user_id"])[0]["cash"]
+
+        # check if input values are valid
+        if shares == None or shares  <= 0:
+            return apology("shares amount is wrong", "input a positve number")
         if stock == None:
             return apology("stock symbol doesn't exits", "try again")
 
         # check if the user can afford to buy
-        cash = db.execute("SELECT cash FROM users WHERE id=:user_id", user_id=session["user_id"])
-        if cash[0]["cash"]<= request.form.get("shares", type=int) * stock["price"]:
+        if user_cash < shares * stock["price"]:
            return apology("You can afford to buy", "Try buying less")
 
+        # buy shares and update user's database
+        try:
+            # update transactions table with current transactions data
+            rows1 = db.execute("INSERT INTO transactions (trans_type, id, cash_before, cash_current ,company, symbol, price, shares) VALUES (1, :user_id, :cash_before, :cash_current, :company, :symbol, :price, :shares)", user_id=session["user_id"], cash_before=user_cash, cash_current=user_cash - shares * stock["price"], company=stock["name"], symbol=stock["symbol"], price=stock["price"], shares=shares)
+
+            # update the users table cash amount
+            rows2 = db.execute("UPDATE users SET cash=(select cash_current from transactions where timestamp=(select max(timestamp) from transactions where id=:user_id)) WHERE id=:user_id", user_id=session["user_id"])
+
+            # check for constraints
+            if rows1 == None or rows2 == None:
+                return apology("Error database not updated", "Database constraints violated")
+
+        # in case of errors
+        except RuntimeError:
+            return apology("RuntimeError updating database", "Try again")
+
+        return redirect(url_for("buy"))
+
+    # if user routed via GET method
     else:
         return render_template("buy.html")
 
@@ -125,7 +145,6 @@ def quote():
     # render form to search a symbol
     elif request.method == "GET":
         return render_template("quote.html")
-    dump()
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -149,20 +168,24 @@ def register():
             return apology("passwords don't match")
 
         # insert user in database
-        rows = db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)", username=request.form.get("username"), hash=pwd_context.encrypt(request.form.get("password")))
-
-        # failed to insert in database
+        # insert into database
         try:
+            rows = db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)", username=request.form.get("username"), hash=pwd_context.encrypt(request.form.get("password")))
             if rows == None:
                 return apology("username already exists")
-        except:
-            return apology("database error")
+
+        except RuntimeError:
+            return apology("RuntimeError database")
 
         # remember which user has logged in
         rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
 
         if rows != 1:
             session["user_id"] = rows[0]["id"]
+
+        # make the first transaction
+        # 0 = deposit, 1 = buy, 2 = sell
+        rows = db.execute("INSERT INTO transactions (trans_type, id, cash_before, cash_current) VALUES (0, :user_id, 0, (SELECT cash FROM users WHERE id=:user_id))", user_id=session["user_id"])
 
         # redirect to login page after registration
         return redirect(url_for("index"))
