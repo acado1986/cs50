@@ -46,3 +46,22 @@ another template
 def hello():
 	""" say hello."""
 	return render_template("hello.html", name="World")
+
+buy
+display form
+    ask for symbol and numbers of shares
+    check if valid input
+    get stock, number of shares
+add stock to users's protofolio
+    can the users afford the stock?
+    SELECT cash FROM users WHERE id=1
+    buying more of the same stock
+    INSERT INTO ...
+new SQL table
+    who bought what at what price and when
+    use appropriate SQLite types
+    define UNIQUE indexes on any fields that should be unique
+    define (non-UNIQUE) indexes on any fields that you may search
+update cash
+    a users cash is sotred in the users table
+    UPDATE users SET cash = cash - 50 WHERE id = 1
