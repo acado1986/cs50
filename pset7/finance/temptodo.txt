@@ -1,0 +1,10 @@
+#change to 2 tables in sqlite3
+change to application.py
+#    buy
+#    sell
+#        create a way to count the shares for each company
+#    index
+Empower users to change their password
+    add a right drop down menu
+add a new feature deposit
+create html table for a history page

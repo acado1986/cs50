@@ -33,7 +33,44 @@ db = SQL("sqlite:///finance.db")
 @app.route("/")
 @login_required
 def index():
-    return apology("TODO")
+
+    # retrieve data from transactions Sqlite table
+    try:
+        rows = db.execute("SELECT symbol, sum(shares) AS shares FROM transactions WHERE users_id=:user_id GROUP BY symbol HAVING symbol!=''",user_id=session["user_id"])
+
+        # check for empty list, no transactions
+        if len(rows) < 1:
+            return apology("No transactions founded", "Buy shares")
+
+    # catch errors
+    except RuntimeError:
+        return apology("RuntimeError database", "Try again")
+
+    # append new dict objectes to rows (keys: company, Price, Total)
+    for row in rows:
+        row.update({"company":lookup(row["symbol"])["name"], "price":lookup(row["symbol"])["price"]})
+        row.update({"market_value":row["price"] * row["shares"]})
+
+    # sum the value of total shares owned by the user
+    total_market_value = sum(row["market_value"] for row in rows)
+
+    # retrieve user curent cash flow
+    try:
+        user_cash=db.execute("SELECT cash FROM users WHERE id=:user_id", user_id=session["user_id"])
+
+        # check for errors
+        if len(user_cash) != 1:
+            return apology("Error retrieving data", "Contact site administrator")
+
+    # catch error on database
+    except RuntimeError:
+        return apology("RuntimeError database", "Try again")
+
+    # sum total assets
+    total_assets = total_market_value + user_cash[0]["cash"]
+
+    # render page
+    return render_template("index.html", rows=rows, total_market_value=str(total_market_value), user_cash=str(round(user_cash[0]["cash"], 2)), total_assets=str(round(total_assets, 2)))
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -47,32 +84,32 @@ def buy():
         user_cash = db.execute("SELECT cash FROM users WHERE id=:user_id", user_id=session["user_id"])[0]["cash"]
 
         # check if input values are valid
-        if shares == None or shares  <= 0:
+        if shares == None or shares <= 0:
             return apology("shares amount is wrong", "input a positve number")
         if stock == None:
             return apology("stock symbol doesn't exits", "try again")
 
         # check if the user can afford to buy
         if user_cash < shares * stock["price"]:
-           return apology("You can afford to buy", "Try buying less")
+           return apology("You can afford to buy", "Buy cheaper or deposit more cash")
 
         # buy shares and update user's database
         try:
-            # update transactions table with current transactions data
-            rows1 = db.execute("INSERT INTO transactions (trans_type, id, cash_before, cash_current ,company, symbol, price, shares) VALUES (1, :user_id, :cash_before, :cash_current, :company, :symbol, :price, :shares)", user_id=session["user_id"], cash_before=user_cash, cash_current=user_cash - shares * stock["price"], company=stock["name"], symbol=stock["symbol"], price=stock["price"], shares=shares)
-
-            # update the users table cash amount
-            rows2 = db.execute("UPDATE users SET cash=(select cash_current from transactions where timestamp=(select max(timestamp) from transactions where id=:user_id)) WHERE id=:user_id", user_id=session["user_id"])
+            # update transactions Sqlite table with current transactions data
+            # transactions table has 3 different operations type: buy, sell, deposit
+            rows = db.execute("INSERT INTO transactions (users_id, type, symbol, price_deposit, shares) VALUES (:users_id,'buy', :symbol, :price_deposit, :shares)", users_id=session["user_id"],symbol=stock["symbol"], price_deposit=stock["price"], shares=shares)
 
             # check for constraints
-            if rows1 == None or rows2 == None:
+            if rows == None:
                 return apology("Error database not updated", "Database constraints violated")
 
         # in case of errors
         except RuntimeError:
             return apology("RuntimeError updating database", "Try again")
 
-        return redirect(url_for("buy"))
+        # return to homepage
+        flash("Bought!")
+        return redirect(url_for("index"))
 
     # if user routed via GET method
     else:
@@ -82,7 +119,26 @@ def buy():
 @login_required
 def history():
     """Show history of transactions."""
-    return apology("TODO")
+    # retrieve data from "transaction" Sqlite table
+    try:
+        rows = db.execute("SELECT timestamp, type, symbol, price_deposit, shares FROM transactions WHERE users_id=:user_id ORDER BY timestamp DESC", user_id=session["user_id"])
+
+        # check for null data
+        if len(rows) < 1:
+            return apology("There are no transactions")
+    # catch errors
+    except RuntimeError:
+        return apology("RuntimeError database")
+
+    # append to the returned dict a new key: company and total
+    for row in rows:
+        # check for cash deposit transaction
+        if row["type"] != "deposit":
+            row.update({"company":lookup(row["symbol"])["name"]})
+            row.update({"total":-(row["price_deposit"] * row["shares"])})
+
+    # render page
+    return render_template("history.html", rows=rows)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -103,19 +159,26 @@ def login():
             return apology("must provide password")
 
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
+        try:
+            rows = db.execute("SELECT * FROM users WHERE username = :username", username=request.form.get("username"))
 
-        # ensure username exists and password is correct
-        if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
-            return apology("invalid username and/or password")
+            # ensure username exists and password is correct
+            if len(rows) != 1 or not pwd_context.verify(request.form.get("password"), rows[0]["hash"]):
+                return apology("invalid username and/or password")
+
+        # check for reading errors
+        except RuntimeError:
+            return apology("Error quering database")
 
         # remember which user has logged in
         session["user_id"] = rows[0]["id"]
+        session["username"] = rows[0]["username"]
 
         # redirect user to home page
+        flash("You were successfully logged in")
         return redirect(url_for("index"))
 
-# else if user reached route via GET (as by clicking a link or via redirect)
+    # else if user reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
 
@@ -168,7 +231,6 @@ def register():
             return apology("passwords don't match")
 
         # insert user in database
-        # insert into database
         try:
             rows = db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)", username=request.form.get("username"), hash=pwd_context.encrypt(request.form.get("password")))
             if rows == None:
@@ -183,10 +245,6 @@ def register():
         if rows != 1:
             session["user_id"] = rows[0]["id"]
 
-        # make the first transaction
-        # 0 = deposit, 1 = buy, 2 = sell
-        rows = db.execute("INSERT INTO transactions (trans_type, id, cash_before, cash_current) VALUES (0, :user_id, 0, (SELECT cash FROM users WHERE id=:user_id))", user_id=session["user_id"])
-
         # redirect to login page after registration
         return redirect(url_for("index"))
 
@@ -198,4 +256,47 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock."""
-    return apology("TODO")
+    if request.method == "POST":
+
+        # save required data for selling
+        shares = request.form.get("shares", type=int)
+        stock = lookup(request.form.get("symbol"))
+
+        # check if input values are valid
+        if shares == None or shares <= 0:
+            return apology("shares amount is wrong", "input a positve number")
+        if stock == None:
+            return apology("stock symbol doesn't exits", "try again")
+
+        # number of shares to sell not higher than total owned
+        try:
+            owned_shares = db.execute("SELECT sum(shares) AS shares FROM transactions WHERE users_id=:users_id AND symbol=:symbol", users_id=session["user_id"],symbol=stock["symbol"])[0]["shares"]
+
+            if owned_shares <= 0 or shares > owned_shares:
+                return apology("You dont't own enough shares of this company")
+            else:
+                # update database with selled shares
+                try:
+                    # transactions table has 3 different operations type: buy, sell, deposit
+                    # add shares as negative integer for a easy query on total shares
+                    rows = db.execute("INSERT INTO transactions (users_id, type, symbol, price_deposit, shares) VALUES (:users_id,'sell', :symbol, :price_deposit, :shares)", users_id=session["user_id"],symbol=stock["symbol"], price_deposit=stock["price"], shares=-shares)
+
+                    # check for constraints
+                    if rows == None:
+                        return apology("Error database not updated", "Database constraints violated")
+
+                # in case of errors
+                except RuntimeError:
+                    return apology("RuntimeError updating database", "Try again")
+
+        # in case of error
+        except RuntimeError:
+            return apology("RuntimeError quering database", "Try again")
+
+        # return to homepage
+        flash("Sold!")
+        return redirect(url_for("index"))
+
+    # if user routed via GET method
+    else:
+        return render_template("sell.html")
