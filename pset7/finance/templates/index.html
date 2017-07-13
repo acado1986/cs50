@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <h2>Assets</h2>
+    <table class="table table-striped"> 
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Company</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th >Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row["symbol"] }}</td>
+                    <td>{{ row["company"] }}</td>
+                    <td>{{ row["shares"] }}</td>
+                    <td>&#36; {{ row["price"] }}</td>
+                    <td>&#36; {{ row["market_value"] }}</td>
+
+                </tr>
+            {% endfor %}
+            <tr>
+                <th colspan="4"></th>
+                <th colspan="2" scope="row" >Total Market Value</th>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td>&#36; {{ total_market_value }}</td>
+            </tr>
+            <tr>
+                <th colspan="4"></th>
+                <th colspan="2" scope="row">Cash</th>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td>&#36; {{ user_cash }}</td>
+            </tr>
+            <tr>
+                <th colspan="4"></th>
+                <th colspan="2" scope="row">Total Assets</th>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td>&#36; {{ total_assets }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
