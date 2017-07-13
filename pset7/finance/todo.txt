@@ -46,3 +46,12 @@ another template
 def hello():
 	""" say hello."""
 	return render_template("hello.html", name="World")
+
+index
+create index.html
+	copy from login
+render table Assets
+	for each row
+		select from purchased timestamp, symbol, shares for user
+		lookup for symbol price and name
+	

@@ -43,8 +43,17 @@
                                 <li><a href="{{ url_for('sell') }}">Sell</a></li>
                                 <li><a href="{{ url_for('history') }}">History</a></li>
                             </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                            <ul class="nav navbar-nav pull-right">
+                                <li class="dropdown">
+                                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">{{ session["username"] | capitalize() }} <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Profile</a></li>
+                                        <li><a href="#">Change password</a></li>
+                                        <li><a href="#">Deposit cash</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav navbar-right">
