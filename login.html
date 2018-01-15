@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block link_login_register_css %}
+<link href="{{ url_for('static', filename='login_register.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}
+	Log In
+{% endblock %}
+
+{% block login_register %}
+	<header class="login_logo"><img src="https://github.com/acado1986/cs50/blob/master/pset7/finance/only%20logo1.png?raw=true" alt="logo graph with a magnifying glass on top"><h1>CS50 Finance</h1></header>
+	<!-- end header -->
+	<form action="{{ url_for('login') }}" method="post">
+	    <input type="text" placeholder="Username" name="username">
+	    <input type="password" placeholder="Password" name="password">
+	    <input type="submit" value="Log In">
+	</form>
+	<!-- end form -->
+	<footer class="login_footer"><a href="/register">Sign Up to CS50</a>
+	  <a href="forgot-password">Forgot Password?</a>
+	 </footer>
+	<!-- end footer -->
+{% endblock login_register %}

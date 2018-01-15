@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block link_main_css %}
+<link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block link_js %}
+	<script src="{{url_for('static', filename='table-pagination.js')}}" defer></script>
+{% endblock link_js %}
+
+{% block title %}
+	Quote
+{% endblock %}
+
+{% block h1 %}
+	Quote
+{% endblock %}
+
+{% block main %}
+<form class="quote" action="{{ url_for('quote') }}" method="post">
+	<input type="text" name="symbol" placeholder="Search..." required>
+	<input type="button" value="Search">
+</form>
+<table class="transactions pagination">
+	<thead>
+		<tr>
+			<th>Symbol</th>
+			<th>Name</th>
+			<th>Price</th>
+			<th>% Change</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in yahoo_data %}
+		<tr>
+			<td>{{ row["Symbol"] }}</td>
+			<td>{{ row["Name"] }}</td>
+			<td>{{ row["Price (Intraday)"] }}</td>
+			<td>{{ row["% Change"] }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock%}

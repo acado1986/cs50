@@ -1,0 +1,59 @@
+/* Wrapper */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* fallback background image */
+  background-color: rgba(52, 152, 219, .9);
+  background: linear-gradient(rgba(52, 152, 219, .85), rgba(52, 152, 219, .85)),
+    url("https://github.com/acado1986/cs50/blob/master/pset7/finance/Background-photo.jpg?raw=true")
+      center/cover
+      no-repeat;
+}
+
+/* Header page */
+.login_logo {
+  width: 30%;
+  display: block;
+  margin-bottom: 3rem;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  font-size: 1.5em;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Form container */
+form > input {
+  display: block;
+  height: 2.5em;
+  width: 50vmax;
+  margin-bottom: 1em;
+  padding: 0.3em 1.2em;
+  color: rgb(85, 85, 85);
+  background-color: rgb(255, 255, 255);
+  border: 0.03em solid rgb(204, 204, 204);
+  border-radius: 0.04em;
+  font-size: 1.2em;
+}
+form > input[type="submit"] {
+  color: rgb(255, 255, 255);
+  background-color: rgb(52, 152, 219);
+  border: 0.03em solid rgb(53, 126, 189);
+  border-radius: 0.3em;
+}
+
+/* Footer */
+.login_footer {
+  margin-top: 2.5rem;
+  width: 50vmax;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-around;
+}
+.login_footer > a {
+  color: rgb(255, 255, 255);
+  font-size: 1.2em;
+  padding: 0 0.5em;
+}

@@ -1,0 +1,227 @@
+/* Global settings */ html { font-size: calc(16px + (24px - 16px) * (100vw - 400px) / (1024 -400)); }
+* { box-sizing: border-box; padding: 0; margin: 0; border: 0; } h1, h2, h3, h4, h5, body { font-family: 'Roboto', sans-serif; font-weight: 400; } a { text-decoration: none; color: #fff; }
+
+/* Wrapper */
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: #ecf0f1;
+  display: grid;
+  grid-template-columns: 20vw auto;
+  grid-template-rows: 8vh auto 4vh;
+  grid-template-areas: "header header"
+                       "sidebar main"
+                        "sidebar footer";
+}
+
+/* Header */
+header {
+  grid-area: header;
+  width: 100vw;
+  background-color: #3498db;
+  color: #ecf0f1;
+  display: flex;
+  align-items: center;
+}
+/* logo */
+.logo {
+  width: 20vw;
+  height: 8vh;
+  background-color: #2980b9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo > img{
+  width: 3.5em;
+}
+.logo > span {
+	font-size: 1.5em;
+  font-weight: 600;
+}
+/* search bar */
+.search-bar > input[type=text] {
+  height: 2em;
+  width: 9.9em;
+  margin: 0 2em 0 0.5em;
+  border-radius: 0.2em;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+.search-bar > input:focus {
+  width: 15em;
+}
+/* page title */
+#current-page {
+  margin: auto;
+}
+/* user details */
+.user-details {
+  display: flex;
+  align-content: center;
+
+}
+.user-details > p {
+  align-self: center;
+}
+.user-details > div {
+  height: 40px;
+  width: 60px;
+  background-color: red;
+  border-radius: 4px;
+  margin-left: 7px;
+}
+
+/* Sidebar */
+.primary-nav {
+  grid-area: sidebar;
+  background-color: #34495e;
+  display: flex;
+  flex-direction: column;
+
+}
+.primary-nav > a {
+  padding: 0.7em 0 0.7em 0.7em;
+  font-size: 1.5em;
+}
+.primary-nav > h1 {
+  color: #6C6F7D;
+  align-self: center;
+}
+.primary-nav > a:last-child {
+  margin-top: auto;
+  margin-bottom: 0.7em;
+  text-align: center;
+}
+.primary-nav > a:hover {
+    background-color: rgba(44, 62, 80, .75);
+}
+
+/* Main content */
+main {
+  grid-area: main;
+  margin: 1em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+/*  grid-template-rows: 1fr 1fr;*/
+  grid-gap: 1em;
+  justify-items: center;
+  align-items: center;
+	overflow-y: auto;
+}
+/* Balance sheet table */
+.balance_sheet > table caption {
+  padding: 0.3em;
+  font-size: 1.3em;
+  text-align: center;
+  background: #2ECC71;
+  color: #FFFFFF;
+}
+.balance_sheet > table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0.5em 1em;
+  background: #FFFFFF;
+  color: #6C6F7D;
+  text-align: left;
+
+}
+.transactions {
+  grid-column: span 2;
+  table-layout: fixed;
+  width: 100%; /* must have this set */
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: #fff;
+}
+.transactions > caption {
+	padding: 0.3em;
+	font-size: 1.3em;
+	text-align: center;
+	background: #395870;
+	color: #FFFFFF;
+  border-bottom: 0.2em solid #ecf0f1;
+}
+.transactions th,
+td {
+  padding: 0.3em 0.7em;
+}
+.transactions thead {
+  background: #395870;
+  color: #fff;
+}
+.transactions th {
+  font-weight: bold;
+}
+.transactions tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+.transactions td {
+  text-align: center;
+  border-bottom: 0.2em solid #ecf0f1;
+  border-right: 0.2em solid #ecf0f1;
+}
+.transactions td:first-child , tfoot td{
+  border-left: 0.2em solid #ecf0f1;
+}
+/* Style for pagination button, created by js */
+#buttons {
+	grid-column: span 2;
+}
+
+#buttons  input[type="button"] {
+	transition: all .3s;
+	border: 1px solid #ddd;
+	padding: 8px 16px;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 15px;
+}
+
+#buttons  input[type="button"]:not(.active) {
+	background-color:transparent;
+}
+
+.active {
+	background-color: #ff4d4d;
+	color :#fff;
+}
+
+#buttons  input[type="button"]:hover:not(.active) {
+	background-color: #ddd;
+}
+
+/* Search quota */
+
+.quote {
+	grid-column: span 2;
+	margin:50px auto;
+}
+.quote > input[type=text] {
+	padding:8px 15px;
+	background:rgba(50, 50, 50, 0.2);
+	border:0px solid #dbdbdb;
+}
+.quote > input[type=button] {
+	position:relative;
+	padding:6px 15px;
+	left:-8px;
+	border:2px solid #207cca;
+	background-color:#207cca;
+	color:#fafafa;
+}
+.quote > input[type=button]:hover {
+	background-color:#fafafa;
+	color:#207cca;
+}
+/* Footer */
+footer {
+  grid-area: footer;
+  background-color: #3498db;
+}
+footer > nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+	justify-items: center;
+}

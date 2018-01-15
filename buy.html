@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block link_main_css %}
+	<link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block title %}
+	Buy
+{% endblock %}
+
+{% block h1 %}
+	Buy
+{% endblock %}
+
+
+{% block main %}
+<form action="{{ url_for('buy') }}" method="post">
+	<fieldset>
+		<div class="form-group">
+			<input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" required="true" type="text"/>
+			<div class="form-group">
+				<input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Number of shares" required="true" type="number"/>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-default" type="submit">Buy</button>
+			</div>
+	</fieldset>
+</form>
+<table>
+	<thead>
+		<tr>
+				<th>Symbol</th>
+				<th>Name</th>
+				<th>Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in data %}
+		<tr>
+			<td>{{ row['Symbol'] }}</td>
+			<td>{{ row['Name'] }}</td>
+			<td>{{ row['Price (Intraday)'] }}</td>
+		</tr>
+		{% endfor%}
+	</tbody>
+</table>
+<table class="table table-striped"> 
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Transaction type</th>
+			<th>Symbol</th>
+			<th>Company</th>
+			<th>Shares</th>
+			<th>At the price/Deposit</th>
+			<th>Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in rows1 %}
+		<tr>
+			<td>{{ row["timestamp"] }}</td>
+			<td>{{ row["type"] | capitalize() }}</td>
+			<td>{%if row["symbol"] %} {{ row["symbol"] }} {%endif%}</td>
+			<td>{{ row["company"] }}</td>
+			<td>{%if row["shares"] %} {{ row["shares"] }} {%endif%}</td>
+			<td>&#36; {{ row["price_deposit"] }}</td>
+			<td>&#36; {{ row["total"] }}</td>
+
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+{% endblock%}

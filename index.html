@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block link_main_css %}
+	<link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block link_js %}
+	<script src="{{url_for('static', filename='draw-charts.js')}}"></script>
+{% endblock link_js %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block h1 %}
+	Overview
+{% endblock %}
+
+{% block main %}
+<div style="position:relative; height:100%; width:100%">
+	<canvas id="pie"></canvas>
+	<script type=text/javascript>
+		drawPieChart("pie", {{ rows | tojson | safe }});
+	</script>
+</div>
+<div style="position:relative; height:100%; width:100%">
+	<canvas id="bar"></canvas>
+	<script type=text/javascript>
+		drawBarChart("bar", {{ rows | tojson | safe }});
+	</script>
+</div>
+<table class="transactions">
+	<caption>Balance Sheet</caption>
+	<thead>
+		<tr>
+			<th scope="col">Symbol</th>
+			<th scope="col">Current price</th>
+			<th scope="col">Shares</th>
+			<th scope="col">Shares Value</th>
+		</tr>
+	</thead>
+	<tbody>{% for row in rows %}
+		<tr>
+			<td>{{ row["symbol"] }}</td>
+			<td>{{ row["price"] | round(2, 'common') }}</td>
+			<td>{{ row["shares"] }}</td>
+			<td>{{ (row["shares"] * row["price"]) | round(2, 'common') }}</td>
+		</tr>
+			{% endfor %}
+	</tbody>
+	 <tfoot>
+	    <tr>
+	      <th scope="row" colspan="3">Total Stocks Value</th>
+		<td>&#36; {{ balance_sheet["total_stocks_value"] | round(2, 'common') | safe }}</td>
+	    </tr>
+	    <tr>
+	      <th scope="row" colspan="3">Cash</th>
+	      	<td>&#36; {{ balance_sheet["user_cash"] | round(2, 'common') | safe }}</td>
+	    </tr>
+	    <tr>
+	      <th scope="row" colspan="3">Total Assets</th>
+		<td>&#36; {{ balance_sheet["total_assets"] | round(2, 'common') | safe }}</td>
+	    </tr>
+	  </tfoot>
+
+</table>
+{% endblock %}

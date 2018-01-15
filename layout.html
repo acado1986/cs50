@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+
+		<!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
+		<meta charset="utf-8"/>
+		<meta content="initial-scale=1, width=device-width" name="viewport"/>
+		{% block link_main_css %}{% endblock %} 
+		{% block link_login_register_css %}{% endblock %} 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
+		{% block link_js %}{% endblock link_js %}
+		<title>C$50 Finance: {% block title %}{% endblock %}</title>
+
+	</head>
+
+	<body>
+
+		{% if session.user_id %}
+			<header>
+				<a href="#" class="logo">
+					<img src="https://github.com/acado1986/cs50/blob/master/pset7/finance/only%20logo1.png?raw=true" alt="logo graph with a magnifying glass on top">
+					<span>CS50 Finance</span>
+				</a>
+				<!-- end logo -->
+				<form class="search-bar">
+					<input type="text" name="search" placeholder="Search...">
+				</form>
+				<h1 id="current-page">{% block h1 %} {% endblock %}</h1>
+				<div class="user-details">
+					<p>Bogdan Ioan</p>
+					<div>Profile picture</div>
+				</div>
+			</header>
+			<!-- end header -->
+			<nav class="primary-nav">
+				<h1>Dashboard</h1>
+				<a href="{{ url_for('index') }}">Overview</a>
+				<a href="{{ url_for('quote') }}">Quota</a>
+				<a href="{{ url_for('buy') }}">Buy</a>
+				<a href="{{ url_for('sell') }}">Sell</a>
+				<a href="{{ url_for('history') }}">History</a>
+				<a id="logout-dashboard" href="{{ url_for('logout') }}">Log out</a>
+			</nav>
+			<!-- end sidebar -->
+			<main>
+
+				{% block main %}{% endblock %}
+
+			</main>
+			<!-- end main -->
+			<footer>
+				<nav class="secondary-nav">
+					<a href="#">Trademark</a>
+					<a href="#">About us</a>
+					<a href="#">Contact us</a>
+				</nav>
+			</footer>
+			<!-- end footer -->
+
+		{% else %}
+			{% block login_register %}{% endblock login_register %}
+		{% endif %}
+
+	</body>
+</html>
